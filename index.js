@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 
 const dotenv = require('dotenv');
 
+const userRoute = require('./routes/user');
+
 dotenv.config();
 
 mongoose
@@ -13,7 +15,11 @@ mongoose
 
 const app = express();
 
-app.get('/test', (req, res) => res.send('Testing World!'));
+app.use(express.json());
+
+app.get('/api/test', (req, res) => res.send('Testing World!'));
+
+app.use('/api', userRoute);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
