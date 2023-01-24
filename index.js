@@ -4,7 +4,14 @@ const mongoose = require('mongoose');
 
 const dotenv = require('dotenv');
 
+// Route imports
+const cors = require('cors');
 const userRoute = require('./routes/user');
+const authRoute = require('./routes/auth');
+const productRoute = require('./routes/product');
+const cartRoute = require('./routes/cart');
+const orderRoute = require('./routes/order');
+const stripeRoute = require('./routes/stripe');
 
 dotenv.config();
 
@@ -14,14 +21,18 @@ mongoose
   .catch(err => console.log(err));
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
-app.get('/api/test', (req, res) => res.send('Testing World!'));
+app.use('/api/auth', authRoute);
+app.use('/api/users', userRoute);
+app.use('/api/products', productRoute);
+app.use('/api/carts', cartRoute);
+app.use('/api/orders', orderRoute);
+app.use('/api/checkout', stripeRoute);
+// app.get('/api/test', (req, res) => res.send('Testing World!'));
 
-app.use('/api', userRoute);
-
-app.get('/', (req, res) => res.send('Hello World!'));
+// app.get('/', (req, res) => res.send('Hello World!'));
 
 app.listen(process.env.PORT || 3001, () =>
   console.log(`Example app listening on port ${process.env.PORT}!`)
